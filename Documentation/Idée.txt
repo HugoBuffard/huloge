@@ -1,0 +1,18 @@
+IDEE JEUX
+
+MENUS
+ - 1 menu règle du jeux
+ - 1 onglet score
+ - 1 onglet Jeux
+
+BONUS
+ - Boule de neige
+
+MANCHE
+ - Toute les 5 manches un boss arrive
+ - Ennemie simple déplacement rectiligne
+
+BOUTON
+ - Bouton commencer
+ - Bouton permettant choix de la difficulté (Facile, Normal, Difficile)
+ 
