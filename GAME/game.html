@@ -71,7 +71,7 @@ var loop = function(){
 
           perso.level++
 
-          VAGUE(10, perso.level);
+          VAGUE(10, perso.level*10);
           bonus = new BONUX(Math.random()*canvas.width,Math.random()*canvas.height, false, randomBonux())
           phase = 1;
         }
