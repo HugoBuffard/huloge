@@ -1,6 +1,4 @@
-var drawProgressBar = function (val, ctx) {
-    var width = 2
-    var height = 20
+var drawProgressBar = function (val, ctx, width, height) {
 
     // Draw the fill
     if(val > 66)
@@ -9,7 +7,7 @@ var drawProgressBar = function (val, ctx) {
     }
     else if (val < 66 && val > 33)
     {
-        ctx.fillStyle = 'orange'; 
+        ctx.fillStyle = 'orange';
     }
     else if(val < 33)
     {
@@ -26,6 +24,6 @@ var drawProgressBar = function (val, ctx) {
     }
     else 
     {
-        ctx.fillText("Vie: "+perso.life + "%", 0+80+(width/2), 0+(height/2));
+        ctx.fillText("Vie: "+val + "%", 0+80+(width/2), 0+(height/2));
     }
   }

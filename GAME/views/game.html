@@ -10,39 +10,25 @@
       </div>
 
 <!-- import Class -->
-<script src="./js/class/mechant.js"></script>
-<script src="./js/class/perso.js"></script>
-<script src="./js/class/projectile.js"></script>
-<script src="./js/class/bonus.js"></script>
+<script src="../js/class/mechant.js"></script>
+<script src="../js/class/perso.js"></script>
+<script src="../js/class/projectile.js"></script>
+<script src="../js/class/bonus.js"></script>
 
 <!-- import Gameplay -->
-<script src="./js/gameplay/controle.js"></script>
+<script src="../js/gameplay/controle.js"></script>
 
 <!-- impot Component -->
-<script src="./js/component/progressBar.js"></script>
-<script src="./js/component/scoreBoard.js"></script>
-<script src="./js/component/replayButton.js"></script>
-<script src="./js/component/bonusList.js"></script>
-<script src="./js/component/timer.js"></script>
+<script src="../js/component/progressBar.js"></script>
+<script src="../js/component/scoreBoard.js"></script>
+<script src="../js/component/replayButton.js"></script>
+<script src="../js/component/bonusList.js"></script>
+<script src="../js/component/timer.js"></script>
 
 
 <!-- import Tools -->
-<script src="./js/tools/tools.js"></script>
-
-
+<script src="../js/tools/tools.js"></script>
 <script>
-
-
-
-/*
-TODO:
-
-- Empecher le personnage de sortir de l'écran. --> Faire des murs
-- Augmenter la vitesse des Méchants quand ils se font tuer.
-  - En fonction du score, les méchants vont plus vite, mais quand le score est trop
-  important, leur vitesse reste la meme, mais par contre, deux repoppent
-
-*/
 //Affichage de la liste des bonus
 showBonusList()
 
@@ -73,6 +59,7 @@ var loop = function(){
 
         if(!( (perso.score) % 10 ) && perso.score != 0){
           MECHANTS=[];
+          PROJECTILES=[];
 
           perso.level++
 
@@ -137,7 +124,7 @@ var draw = function(ctx){
   }
 
   perso.draw(ctx);
-  drawProgressBar(perso.life, ctx);
+  drawProgressBar(perso.life, ctx, 2, 20);
   drawScoreBoard(perso.score, perso.level, ctx, canvas)
 }
 loop();

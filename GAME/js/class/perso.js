@@ -14,15 +14,15 @@ var PERSO = function(x,y,a,v){
       this.x=x;
       this.y=y;
     }
-  
+
     this.tourner = function(a){
       this.a=this.a+a;
     }
-  
+
     this.vitesse = function(v){
       this.v = v;
     }
-  
+
     this.avancer = function(){
       pi = Math.PI;
       arad = ( this.a / 180 ) * pi;
@@ -30,6 +30,17 @@ var PERSO = function(x,y,a,v){
       var dy = Math.sin( arad ) * this.v;
       this.aller(this.x+dx,this.y+dy);
       this.face="😡";
+
+      if(this.x + dx > canvas.width || this.x + dx < 0)
+      {
+        this.x = this.x - dx
+      }
+
+      if(this.y + dy > canvas.height || this.y + dy < 0)
+      {
+        this.y = this.y + - dy
+      }
+
       for(var i =0; i<MECHANTS.length;i++)
       {
         if( distance(this, MECHANTS[i]) < 20)
@@ -52,17 +63,17 @@ var PERSO = function(x,y,a,v){
         bonus.startBonus()
         bonus.taken = true
       }
-  
+
     }
 
     this.follow = function(angle){
         this.a = angle*(180/Math.PI)
     }
-  
+
     this.tirer= function(){
       PROJECTILES.push( new PROJECTILE(this.x, this.y, this.a, this.v+10, 1000)); // 3-> la vitesse du projectile
     }
-  
+
     this.draw = function(ctx){
       pi = Math.PI;
       arad = ( this.a / 180 ) * pi;
@@ -76,4 +87,3 @@ var PERSO = function(x,y,a,v){
       ctx.fillText(this.face,Math.ceil(this.x),Math.ceil(this.y));
     }
   }
-  
