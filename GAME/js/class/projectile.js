@@ -7,7 +7,7 @@ var PROJECTILE = function(x,y,a,v, dmax=400){
   this.v=v;
   this.max = dmax;
   this.d=0;
-  this.face="💩";
+  this.face="◼";
   this.stopped=false;
 
   this.avancer = function(){
@@ -28,10 +28,15 @@ var PROJECTILE = function(x,y,a,v, dmax=400){
         {
           if(distance(this, MECHANTS[i])<20)
           {
-            MECHANTS[i].meurt();
-            MECHANTS.splice(i,1);
-            this.d=this.dmax;
-            this.stopped = true;
+            MECHANTS[i].vie--;
+
+            if(MECHANTS[i].vie <= 0)
+            {
+              MECHANTS[i].meurt()
+              MECHANTS.splice(i,1);
+              this.d=this.dmax;
+              this.stopped = true;
+            }
           }
         }
       }
