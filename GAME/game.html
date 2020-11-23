@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html class="h-100" lang="en"><head>
+<body>
+
+     <canvas id="canvas" style="border: 2px solid #888; width:800px; height:600px;" width="800" height="600"></canvas>
+        <div id="replayButton"></div>
+        <div id="bonus-list" style="padding-top: 2em;">
+          <h3>Liste des bonus : </h3>
+      </div>
+
+<!-- import Class -->
+<script src="./js/class/mechant.js"></script>
+<script src="./js/class/perso.js"></script>
+<script src="./js/class/projectile.js"></script>
+<script src="./js/class/bonus.js"></script>
+
+<!-- import Gameplay -->
+<script src="./js/gameplay/controle.js"></script>
+
+<!-- impot Component -->
+<script src="./js/component/progressBar.js"></script>
+<script src="./js/component/scoreBoard.js"></script>
+<script src="./js/component/replayButton.js"></script>
+<script src="./js/component/bonusList.js"></script>
+<script src="./js/component/timer.js"></script>
+
+<!-- import Tools -->
+<script src="./js/tools/tools.js"></script>
+<script>
+/*
+TODO:
+
+- Empecher le personnage de sortir de l'écran. --> Faire des murs
+- Augmenter la vitesse des Méchants quand ils se font tuer.
+  - En fonction du score, les méchants vont plus vite, mais quand le score est trop
+  important, leur vitesse reste la meme, mais par contre, deux repoppent
+
+*/
+
+//Affichage de la liste des bonus
+showBonusList()
+
+var i = 0;
+var levelMax = 10;
+var canvas=document.getElementById("canvas");
+canvas.width=800;
+canvas.height=600;
+var ctx=canvas.getContext('2d');
+
+ctx.font = '20px serif'
+ctx.textAlign = "center";
+ctx.textBaseline = "middle";
+
+
+var perso = new PERSO(canvas.width>>1,canvas.height>>1,90,0);
+VAGUE(10, 1)
+var bonus = new BONUX(Math.random()*canvas.width,Math.random()*canvas.height,false, randomBonux())
+
+var phase = 0;
+
+var loop = function(){
+  if(perso.life>0 && perso.level < levelMax)
+  {
+    window.requestAnimationFrame(loop);
+    switch (phase) {
+      case 0: // Les ennemis repoppent
+
+        if(!( (perso.score) % 10 ) && perso.score != 0){
+          MECHANTS=[];
+
+          perso.level++
+
+          VAGUE(10, perso.level);
+          bonus = new BONUX(Math.random()*canvas.width,Math.random()*canvas.height, false, randomBonux())
+          phase = 1;
+        }
+
+        break;
+        case 1: // Nouvelle vague
+          if(MECHANTS.length==0){
+            phase = 0;
+          }
+          break;
+      default:
+
+    }
+
+
+    controle();
+    perso.avancer();
+    draw(ctx);
+  }
+  else if(perso.life > 0 && perso.level == levelMax)
+  {
+    draw(ctx);
+    ctx.fillText("Gagné ! 🏆 Score : " + calculFinalScore(), canvas.width>>1, canvas.height>>1);
+    showReplayButton();
+  }
+  else
+  {
+    draw(ctx);
+    ctx.fillText("Perdu ! 🤯 Score : " + calculFinalScore(), canvas.width>>1, canvas.height>>1);
+    showReplayButton();
+  }
+}
+//  document.addEventListener('keyup', controle);
+
+
+var draw = function(ctx){
+  ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
+  for(var i =0; i<PROJECTILES.length;i++)
+  {
+    if(PROJECTILES.stopped){
+      PROJECTILES.splice(i, 1);
+    }
+    else
+    {
+    PROJECTILES[i].avancer();
+    PROJECTILES[i].draw(ctx);
+    }
+  }
+
+  for(var i =0; i<MECHANTS.length;i++)
+  {
+    MECHANTS[i].draw(ctx);
+  }
+
+  if(bonus.taken == false)
+  {
+    bonus.draw(ctx)
+  }
+
+  perso.draw(ctx);
+  drawProgressBar(perso.life, ctx);
+  drawScoreBoard(perso.score, perso.level, ctx, canvas)
+}
+loop();
+
+</script>
+
+</body></html>
