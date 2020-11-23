@@ -5,7 +5,8 @@ const BONUS = {
     INVINCIBLE: {name: "Invincible", value: 2, face: "💪", description: "Vous êtes invincible durant " + interval/1000+ " secondes"},
     SPEED: {name: "Vitesse", value: 3, face: "🏎", description: "Votre vitesse est accrue durant " + interval/1000 + " secondes"},
     LIFE: {name: "Vie", value: 4, face: "❤️", description: "Vous récupérez toutes votre santé"},
-    TIME: {name: "Horloge", value: 5, face: "⏱", description: "Permet d'augmenter un petit peu le temps des bonus durant toutes la partie"}
+    TIME: {name: "Horloge", value: 5, face: "⏱", description: "Permet d'augmenter un petit peu le temps des bonus durant toutes la partie"},
+    ICE: {name: "Neige", value: 6, face: "❄️", description: "Permet de réduire la vitesse des ennemies " + interval/1000 + " secondes"}
 }
 
 var BONUX = function(x, y, taken, bonus){
@@ -58,6 +59,20 @@ var BONUX = function(x, y, taken, bonus){
 
            this.startBonus = function(){
                 interval = interval + 1000
+            }
+        break
+        case BONUS.ICE:
+            this.face = BONUS.ICE.face
+
+           this.startBonus = function(){
+             for (var i = 0; i < MECHANTS.length; i++) {
+                 i.v = i.v/2;
+             }
+             setTimeout(function(){
+               for (var i = 0; i < MECHANTS.length; i++) {
+                   MECHANTS[i].v = MECHANTS[i].v*2;
+               }
+             }, interval)
             }
         break
     }
