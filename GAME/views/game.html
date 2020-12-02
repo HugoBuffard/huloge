@@ -1,55 +1,114 @@
 
 <!DOCTYPE html>
 <html class="h-100" lang="en"><head>
+  <title>JEUX HULOGE</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="../assets/css/main.css" />
+</head>
 <body>
 
-     <canvas id="canvas" style="border: 2px solid #888; width:800px; height:600px;" width="800" height="600"></canvas>
+  <!-- Header -->
+  <header id="header">
+    <div class="inner">
+      <a href="index.html" class="logo">JEUX HULOGE</a>
+      <nav id="nav">
+        <a href="index.html">Menu</a>
+        <a href="game.html">Game</a>
+        <a href="regle.html">Regle</a>
+        <a href="score.html">Score</a>
+      </nav>
+    </div>
+  </header>
+
+  <a href="#menu" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+
+  <!-- Banner -->
+  <section id="banner" style="padding:2em 0 5em 0;">
+    <div class="inner">
+      <center><canvas id="game" style="border: 2px solid #888; background:url(../assets/images/image2.jpg); width:800px; height:600px; margin-bottom:1%;"></canvas></center>
+      <ul id="liste" class="actions" style="margin:0 0 0 0;">
+        <center>
+          <a class="button alt" style="margin-right:5%;" onclick="maNouvelleGame()">JOUER</a>
+          <div style="display:inline-block;">
+            <input type="radio" name="radio" id="radio1" checked>
+            <label for="radio1"><b>Facile</b></label>
+          </div>
+          <div style="display:inline-block;">
+            <input type="radio" name="radio" id="radio2">
+            <label for="radio2"><b>Difficile</b></label>
+          </div>
+        </center></ul>
         <div id="replayButton"></div>
-        <div id="bonus-list" style="padding-top: 2em;">
-          <h3>Liste des bonus : </h3>
       </div>
+    </section>
 
-<!-- import Class -->
-<script src="../js/class/mechant.js"></script>
-<script src="../js/class/perso.js"></script>
-<script src="../js/class/projectile.js"></script>
-<script src="../js/class/bonus.js"></script>
+    <!-- Footer -->
+    <section id="footer">
+      <div class="inner">
+      </div>
+    </section>
 
-<!-- import Gameplay -->
-<script src="../js/gameplay/controle.js"></script>
+    <!-- import Class -->
+    <script src="../js/class/mechant.js"></script>
+    <script src="../js/class/perso.js"></script>
+    <script src="../js/class/projectile.js"></script>
+    <script src="../js/class/bonus.js"></script>
 
-<!-- impot Component -->
-<script src="../js/component/progressBar.js"></script>
-<script src="../js/component/scoreBoard.js"></script>
-<script src="../js/component/replayButton.js"></script>
-<script src="../js/component/bonusList.js"></script>
-<script src="../js/component/timer.js"></script>
+    <!-- import Gameplay -->
+    <script src="../js/gameplay/controle.js"></script>
+
+    <!-- impot Component -->
+    <script src="../js/component/progressBar.js"></script>
+    <script src="../js/component/scoreBoard.js"></script>
+    <script src="../js/component/replayButton.js"></script>
+    <script src="../js/component/bonusList.js"></script>
+    <script src="../js/component/timer.js"></script>
 
 
-<!-- import Tools -->
-<script src="../js/tools/tools.js"></script>
-<script>
-//Affichage de la liste des bonus
-showBonusList()
+    <!-- import Tools -->
+    <script src="../js/tools/tools.js"></script>
+    <script>
+      var canvas = document.getElementById("game");
 
-var i = 0;
-var levelMax = 10;
-var canvas=document.getElementById("canvas");
-canvas.width=800;
-canvas.height=600;
-var ctx=canvas.getContext('2d');
+    function maNouvelleGame()
+    {
+      var liste = document.getElementById('liste');
+      var i = 0;
+      var levelMax = 10;
 
-ctx.font = '20px serif'
-ctx.textAlign = "center";
-ctx.textBaseline = "middle";
+      var radio1 = document.getElementById("radio1");
+      var radio2 = document.getElementById("radio2");
 
+if(radio1.checked){
+  var difficulter = true;
+}else if(radio2.checked){
+var difficulter = false;
+}
+      liste.remove();
+
+      canvas.width=800;
+      canvas.height=600;
+      var ctx=canvas.getContext('2d');
+      ctx.font = '20px serif'
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      var perso = new PERSO(canvas.width>>1,canvas.height>>1,90,0);
 
 var perso = new PERSO(canvas.width>>1,canvas.height>>1,90,0);
-VAGUE(10, 1)
+if (difficulter) {
+  VAGUE(5, 1)
+}else {
+  VAGUE(10, 2)
+}
+
 var bonus = new BONUX(Math.random()*canvas.width,Math.random()*canvas.height,false, randomBonux())
 
 var phase = 0;
 
+
+//  document.addEventListener('keyup', controle);
 var loop = function(){
   if(perso.life>0 && perso.level < levelMax)
   {
@@ -59,11 +118,10 @@ var loop = function(){
 
         if(!( (perso.score) % 10 ) && perso.score != 0){
           MECHANTS=[];
-          PROJECTILES=[];
 
           perso.level++
 
-          VAGUE(10, perso.level*10);
+          VAGUE(10, perso.level);
           bonus = new BONUX(Math.random()*canvas.width,Math.random()*canvas.height, false, randomBonux())
           phase = 1;
         }
@@ -96,8 +154,6 @@ var loop = function(){
     showReplayButton();
   }
 }
-//  document.addEventListener('keyup', controle);
-
 
 var draw = function(ctx){
   ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
@@ -108,8 +164,8 @@ var draw = function(ctx){
     }
     else
     {
-    PROJECTILES[i].avancer();
-    PROJECTILES[i].draw(ctx);
+      PROJECTILES[i].avancer();
+      PROJECTILES[i].draw(ctx);
     }
   }
 
@@ -127,21 +183,15 @@ var draw = function(ctx){
   drawProgressBar(perso.life, ctx, 2, 20);
   drawScoreBoard(perso.score, perso.level, ctx, canvas)
 }
+
+
 loop();
 
-</script>
 
-<<<<<<< Updated upstream
-</body></html>
-=======
-<div w3-include-html="index.html"></div>
-
-<script>
-includeHTML();
-</script>
+    }
 
 
 
- </body>
-</html>
->>>>>>> Stashed changes
+    </script>
+
+  </body></html>
