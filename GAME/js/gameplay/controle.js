@@ -8,18 +8,6 @@ function getMousePosition(canvas, e){
     }
 }
 
-canvas.addEventListener('mousemove', function (e) {
-    let mousePosition = getMousePosition(canvas, e)
-    let mouseXFromCenter = mousePosition.x - perso.x
-    let mouseYFromCenter = mousePosition.y - perso.y
-
-    let mouseAngle = Math.atan2(mouseYFromCenter,mouseXFromCenter)
-    perso.follow(mouseAngle)
-}, false)
-canvas.addEventListener('click', function (e){
-    perso.tirer()
-}, false)
-
 let KEYS={
     UP:false,
     DOWN:false,
@@ -92,4 +80,17 @@ let KEYS={
       break;
     }
     event.preventDefault();
+
+      canvas.addEventListener('mousemove', function (e) {
+          let mousePosition = getMousePosition(canvas, e)
+          let mouseXFromCenter = mousePosition.x - perso.x
+          let mouseYFromCenter = mousePosition.y - perso.y
+
+          let mouseAngle = Math.atan2(mouseYFromCenter,mouseXFromCenter)
+          perso.follow(mouseAngle)
+      }, false)
+      canvas.addEventListener('click', function (e){
+          perso.tirer()
+      }, false)
+
   }, false);

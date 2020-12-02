@@ -4,16 +4,12 @@ const TYPES_MECHANTS= {
   AI: {nom: "AI", vie: 1, face: "😈", description: "Ce méchant est de type Intelligence Articielle, il à 1 de vie est il suit vos mouvement"}
 }
 
-
-
-
-
 var MECHANTS = [];
 
 var VAGUE = function(nombreMechants, vitesseMechants){
 
-  for(let i = 0; i< 1; i++){
-    let newMechant = new MECHANT(Math.random()*canvas.width,Math.random()*canvas.height, TYPES_MECHANTS.BOSS);
+  for(let i = 0; i< nombreMechants; i++){
+    let newMechant = new MECHANT(Math.random()*canvas.width,Math.random()*canvas.height, randomEnemy());
     newMechant.v = vitesseMechants;
 
     MECHANTS.push(newMechant);

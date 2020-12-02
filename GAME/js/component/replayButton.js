@@ -3,7 +3,7 @@ var showReplayButton = function(){
     var replayButtonDiv = document.getElementById("replayButton");
     var replayButton = document.createElement("button");
     replayButton.innerHTML="Rejouer";
-    replayButton.setAttribute("class", "btn btn-primary");
+    replayButton.setAttribute("class", "button alt");
     replayButton.addEventListener("click", function(e){
       document.location.reload(true);
     });

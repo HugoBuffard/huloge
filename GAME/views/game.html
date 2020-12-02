@@ -29,7 +29,7 @@
       <center><canvas id="game" style="border: 2px solid #888; background:url(../assets/images/image2.jpg); width:800px; height:600px; margin-bottom:1%;"></canvas></center>
       <ul id="liste" class="actions" style="margin:0 0 0 0;">
         <center>
-          <a class="button alt" style="margin-right:5%;" onclick="maNouvelleGame()">JOUER</a>
+          <a class="button alt" style="margin-right:5%;" onclick="maNouvelleGame()">commencer</a>
           <div style="display:inline-block;">
             <input type="radio" name="radio" id="radio1" checked>
             <label for="radio1"><b>Facile</b></label>
@@ -39,7 +39,9 @@
             <label for="radio2"><b>Difficile</b></label>
           </div>
         </center></ul>
+      <center>
         <div id="replayButton"></div>
+      </center>
       </div>
     </section>
 
@@ -55,7 +57,10 @@
     <script src="../js/class/projectile.js"></script>
     <script src="../js/class/bonus.js"></script>
 
-<!-- impot Component -->
+  <!-- import Gameplay -->
+  <script src="../js/gameplay/controle.js"></script>
+
+<!-- import Component -->
 <script src="../js/component/progressBar.js"></script>
 <script src="../js/component/scoreBoard.js"></script>
 <script src="../js/component/replayButton.js"></script>
@@ -64,135 +69,146 @@
 
 <!-- import Tools -->
 <script src="../js/tools/tools.js"></script>
+
 <script>
-//Affichage de la liste des bonus
-showBonusList()
-
-    <!-- import Tools -->
-    <script src="../js/tools/tools.js"></script>
-    <script>
       var canvas = document.getElementById("game");
-
-    function maNouvelleGame()
-    {
       var liste = document.getElementById('liste');
+      var radio1 = document.getElementById("radio1");
+      var radio2 = document.getElementById("radio2");
+      var ctx = canvas.getContext('2d');
+
+      var perso = new PERSO(canvas.width >> 1, canvas.height >> 1, 90, 0);
+
+      var bonus = new BONUX(Math.random() * canvas.width, Math.random() * canvas.height, false, randomBonux());
+
+    function maNouvelleGame() {
       var i = 0;
       var levelMax = 10;
 
-      var radio1 = document.getElementById("radio1");
-      var radio2 = document.getElementById("radio2");
+      let difficultly;
 
-if(radio1.checked){
-  var difficulter = true;
-}else if(radio2.checked){
-var difficulter = false;
-}
+      if (radio1.checked) {
+        difficultly = true;
+      } else if (radio2.checked) {
+        difficultly = false;
+      }
       liste.remove();
 
-      canvas.width=800;
-      canvas.height=600;
-      var ctx=canvas.getContext('2d');
+      canvas.width = 800;
+      canvas.height = 600;
+
       ctx.font = '20px serif'
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
 
-      var perso = new PERSO(canvas.width>>1,canvas.height>>1,90,0);
-
-var perso = new PERSO(canvas.width>>1,canvas.height>>1,90,0);
-VAGUE(10, 1)
-var bonus = new BONUX(Math.random()*canvas.width,Math.random()*canvas.height,false, randomBonux())
-
-var phase = 0;
-
+      if(difficultly) {
+        VAGUE(5, 1)
+        levelMax = 7;
+      }
+      else
+      {
+        VAGUE(10, 1)
+        levelMax = 12;
+      }
+      var phase = 0;
 
 //  document.addEventListener('keyup', controle);
-var loop = function(){
-  if(perso.life>0 && perso.level < levelMax)
-  {
-    window.requestAnimationFrame(loop);
-    switch (phase) {
-      case 0: // Les ennemis repoppent
+      var loop = function () {
+        if (perso.life > 0 && perso.level < levelMax) {
+          window.requestAnimationFrame(loop);
+          switch (phase) {
+            case 0: // Les ennemis repoppent
 
-        if(!( (perso.score) % 10 ) && perso.score != 0){
+                    if(difficultly) {
+                      if (!((perso.score) % 5) && perso.score != 0) {
 
-            MECHANTS=[];
-            PROJECTILES=[];
+                        MECHANTS = [];
+                        PROJECTILES = [];
 
-            if(perso.level%5 == 0)
-            {
-                BOSS_SPAWN();
-                perso.score = perso.score + 9
-            }
-            else
-            {
-                VAGUE(10, perso.level);
-                bonus = new BONUX(Math.random()*canvas.width,Math.random()*canvas.height, false, randomBonux())
-            }
+                        if (perso.level % 5 == 0) {
+                          BOSS_SPAWN();
+                          perso.score = perso.score + 9
+                        } else {
+                          VAGUE(5, perso.level / 2);
+                          bonus = new BONUX(Math.random() * canvas.width, Math.random() * canvas.height, false, randomBonux())
+                        }
 
-            perso.level++;
-            phase = 1;
+                        perso.level++;
+                        phase = 1;
+                      }
+                    }
+                      else {
+                      if (!((perso.score) % 10) && perso.score != 0) {
 
+                        MECHANTS = [];
+                        PROJECTILES = [];
+
+                        if (perso.level % 5 == 0) {
+                          BOSS_SPAWN();
+                          perso.score = perso.score + 9
+                        } else {
+                          VAGUE(10, perso.level);
+                          bonus = new BONUX(Math.random() * canvas.width, Math.random() * canvas.height, false, randomBonux())
+                        }
+
+                        perso.level++;
+                        phase = 1;
+                      }
+                    }
+
+              break;
+            case 1: // Nouvelle vague
+              if (MECHANTS.length == 0) {
+                phase = 0;
+              }
+              break;
+            default:
+
+          }
+
+
+          controle();
+          perso.avancer();
+          draw(ctx);
+        } else if (perso.life > 0 && perso.level == levelMax) {
+          draw(ctx);
+          ctx.fillText("Gagné ! 🏆 Score : " + calculFinalScore(), canvas.width >> 1, canvas.height >> 1);
+          showReplayButton();
+        } else {
+          draw(ctx);
+          ctx.fillText("Perdu ! 🤯 Score : " + calculFinalScore(), canvas.width >> 1, canvas.height >> 1);
+          showReplayButton();
+        }
+      }
+
+      var draw = function (ctx) {
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        for (let i = 0; i < PROJECTILES.length; i++) {
+          if (PROJECTILES.stopped) {
+            PROJECTILES.splice(i, 1);
+          } else {
+            PROJECTILES[i].avancer();
+            PROJECTILES[i].draw(ctx);
+          }
         }
 
-        break;
-        case 1: // Nouvelle vague
-          if(MECHANTS.length==0){
-            phase = 0;
-          }
-          break;
-      default:
+        for (let i = 0; i < MECHANTS.length; i++) {
+          MECHANTS[i].draw(ctx);
+        }
 
+        if (bonus.taken === false) {
+          bonus.draw(ctx)
+        }
+
+        perso.draw(ctx);
+        drawScoreBoard(perso.score, perso.level, ctx, canvas)
+      }
+
+
+      loop();
     }
 
-
-    controle();
-    perso.avancer();
-    draw(ctx);
-  }
-  else if(perso.life > 0 && perso.level == levelMax)
-  {
-    draw(ctx);
-    ctx.fillText("Gagné ! 🏆 Score : " + calculFinalScore(), canvas.width>>1, canvas.height>>1);
-    showReplayButton();
-  }
-  else
-  {
-    draw(ctx);
-    ctx.fillText("Perdu ! 🤯 Score : " + calculFinalScore(), canvas.width>>1, canvas.height>>1);
-    showReplayButton();
-  }
-}
-
-var draw = function(ctx){
-  ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
-  for(let i=0; i<PROJECTILES.length;i++)
-  {
-    if(PROJECTILES.stopped){
-      PROJECTILES.splice(i, 1);
-    }
-    else
-    {
-      PROJECTILES[i].avancer();
-      PROJECTILES[i].draw(ctx);
-    }
-  }
-
-  for(let i =0; i<MECHANTS.length;i++)
-  {
-    MECHANTS[i].draw(ctx);
-  }
-
-  if(bonus.taken === false)
-  {
-    bonus.draw(ctx)
-  }
-
-  perso.draw(ctx);
-  drawScoreBoard(perso.score, perso.level, ctx, canvas)
-}
-
-
-loop();
+    </script>
 
 
 </body></html>
