@@ -1,7 +1,7 @@
-var speed = 5;
+let speed = 5;
 
 function getMousePosition(canvas, e){
-    var rect = canvas.getBoundingClientRect();
+    let rect = canvas.getBoundingClientRect();
     return {
         x: e.clientX - rect.left,
         y: e.clientY - rect.top
@@ -9,18 +9,18 @@ function getMousePosition(canvas, e){
 }
 
 canvas.addEventListener('mousemove', function (e) {
-    var mousePosition = getMousePosition(canvas, e)
-    mouseXFromCenter = mousePosition.x - perso.x
-    mouseYFromCenter = mousePosition.y - perso.y
+    let mousePosition = getMousePosition(canvas, e)
+    let mouseXFromCenter = mousePosition.x - perso.x
+    let mouseYFromCenter = mousePosition.y - perso.y
 
-    mouseAngle = Math.atan2(mouseYFromCenter,mouseXFromCenter)
+    let mouseAngle = Math.atan2(mouseYFromCenter,mouseXFromCenter)
     perso.follow(mouseAngle)
 }, false)
 canvas.addEventListener('click', function (e){
     perso.tirer()
 }, false)
 
-var KEYS={
+let KEYS={
     UP:false,
     DOWN:false,
     LEFT:false,

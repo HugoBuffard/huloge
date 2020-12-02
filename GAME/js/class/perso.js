@@ -8,6 +8,7 @@ var PERSO = function(x,y,a,v){
     this.score = 0;
     this.level = 1;
     this.life = 100;
+    this.maxLife = 100;
     this.invincible = false;
 
     this.aller = function(x,y){
@@ -71,7 +72,7 @@ var PERSO = function(x,y,a,v){
     }
 
     this.tirer= function(){
-      PROJECTILES.push( new PROJECTILE(this.x, this.y, this.a, this.v+10, 1000)); // 3-> la vitesse du projectile
+      PROJECTILES.push( new PROJECTILE(this.x, this.y, this.a, this.v+10, 1000, 0)); // 3-> la vitesse du projectile
     }
 
     this.draw = function(ctx){
@@ -85,5 +86,6 @@ var PERSO = function(x,y,a,v){
       ctx.lineTo(this.x+dx, this.y+dy);
       ctx.stroke();
       ctx.fillText(this.face,Math.ceil(this.x),Math.ceil(this.y));
+      drawProgressBar(this.life, ctx, 2, 20, 0, 0, this.maxLife);
     }
   }

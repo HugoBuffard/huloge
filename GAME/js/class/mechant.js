@@ -11,13 +11,18 @@ const TYPES_MECHANTS= {
 var MECHANTS = [];
 
 var VAGUE = function(nombreMechants, vitesseMechants){
-  var nb = nombreMechants;
-  var v = vitesseMechants;
-  for(i = 0; i< nb; i++){
-    var newMechant = new MECHANT(Math.random()*canvas.width,Math.random()*canvas.height, TYPES_MECHANTS.SIMPLE);
-    newMechant.v = v;
+
+  for(let i = 0; i< 1; i++){
+    let newMechant = new MECHANT(Math.random()*canvas.width,Math.random()*canvas.height, TYPES_MECHANTS.BOSS);
+    newMechant.v = vitesseMechants;
+
     MECHANTS.push(newMechant);
   }
+}
+
+var BOSS_SPAWN = function(){
+  let newBoss = new MECHANT(Math.random()*canvas.width,Math.random()*canvas.height, TYPES_MECHANTS.BOSS);
+  MECHANTS.push(newBoss);
 }
  // retourne le nombre de méchants en vie dans le jeu
 remainingMechant = function(){
@@ -33,6 +38,7 @@ var MECHANT = function(x, y, type){
   this.a = 0;
   this.v = 1;
   this.vie = 1;
+  this.vieMax = 100;
   this.face = "";
   this.alive=true;
 
@@ -41,30 +47,28 @@ var MECHANT = function(x, y, type){
 
     case TYPES_MECHANTS.SIMPLE:
       this.face = TYPES_MECHANTS.SIMPLE.face
-      this.vie = TYPES_MECHANTS.SIMPLE.vie
+      this.vie = this.vieMax = TYPES_MECHANTS.SIMPLE.vie
 
-      var dx = 0
-      var dy = 1 * this.v
+      let dxs = 0
+      let dys = this.v
 
       this.ia = function(){
 
-         this.x = this.x + dx
-         this.y = this.y + dy
+         this.x = this.x + dxs
+         this.y = this.y + dys
 
-         if(this.y + dy > canvas.height || this.y + dy < 0)
+         if(this.y + dys > canvas.height || this.y + dys < 0)
          {
-            dy = -dy
+            dys = -dys
          }
-
-
       }
     break;
     case TYPES_MECHANTS.BOSS:
       this.face = TYPES_MECHANTS.BOSS.face
-      this.vie = TYPES_MECHANTS.SIMPLE.vie
+      this.vie = this.vieMax = TYPES_MECHANTS.BOSS.vie
 
-      var dx = 1 * this.v
-      var dy = 0
+      let dx = this.v
+      let dy = 0
 
       this.ia = function(){
         this.x = this.x + dx
@@ -75,25 +79,29 @@ var MECHANT = function(x, y, type){
            dx = -dx
         }
 
+        if (this.alive == true && this.vie > 0)
+        {
+
+          PROJECTILES.push( new PROJECTILE(this.x, this.y, randomNumber(360), 3, 1000, 1))
+        }
 
       }
+
     break;
     case TYPES_MECHANTS.AI:
       this.face = TYPES_MECHANTS.AI.face
-      this.vie = TYPES_MECHANTS.SIMPLE.vie
+      this.vie = this.vieMax = TYPES_MECHANTS.AI.vie
 
       this.ia = function(){
         this.a = r2d(Math.atan2(  perso.y - this.y ,   perso.x- this.x));
-        pi = Math.PI;
-        arad = ( this.a / 180 ) * pi;
-        var dx = Math.cos( arad ) * this.v;
-        var dy = Math.sin( arad ) * this.v;
+        let pi = Math.PI;
+        let arad = (this.a / 180) * pi;
+        let dx = Math.cos( arad ) * this.v;
+        let dy = Math.sin( arad ) * this.v;
         this.x = this.x + dx ;
         this.y = this.y + dy ;
-
       }
     break;
-
   }
 
   this.meurt = function(){
@@ -105,6 +113,7 @@ var MECHANT = function(x, y, type){
 
   this.draw = function(ctx){
     ctx.fillText(this.face,Math.ceil(this.x),Math.ceil(this.y));
+    drawProgressBar(this.vie, ctx, 1, 5, this.x - 15, this.y + 12, this.vieMax)
     this.ia();
   }
 }

@@ -55,16 +55,18 @@
     <script src="../js/class/projectile.js"></script>
     <script src="../js/class/bonus.js"></script>
 
-    <!-- import Gameplay -->
-    <script src="../js/gameplay/controle.js"></script>
+<!-- impot Component -->
+<script src="../js/component/progressBar.js"></script>
+<script src="../js/component/scoreBoard.js"></script>
+<script src="../js/component/replayButton.js"></script>
+<script src="../js/component/bonusList.js"></script>
 
-    <!-- impot Component -->
-    <script src="../js/component/progressBar.js"></script>
-    <script src="../js/component/scoreBoard.js"></script>
-    <script src="../js/component/replayButton.js"></script>
-    <script src="../js/component/bonusList.js"></script>
-    <script src="../js/component/timer.js"></script>
 
+<!-- import Tools -->
+<script src="../js/tools/tools.js"></script>
+<script>
+//Affichage de la liste des bonus
+showBonusList()
 
     <!-- import Tools -->
     <script src="../js/tools/tools.js"></script>
@@ -97,12 +99,7 @@ var difficulter = false;
       var perso = new PERSO(canvas.width>>1,canvas.height>>1,90,0);
 
 var perso = new PERSO(canvas.width>>1,canvas.height>>1,90,0);
-if (difficulter) {
-  VAGUE(5, 1)
-}else {
-  VAGUE(10, 2)
-}
-
+VAGUE(10, 1)
 var bonus = new BONUX(Math.random()*canvas.width,Math.random()*canvas.height,false, randomBonux())
 
 var phase = 0;
@@ -117,13 +114,24 @@ var loop = function(){
       case 0: // Les ennemis repoppent
 
         if(!( (perso.score) % 10 ) && perso.score != 0){
-          MECHANTS=[];
 
-          perso.level++
+            MECHANTS=[];
+            PROJECTILES=[];
 
-          VAGUE(10, perso.level);
-          bonus = new BONUX(Math.random()*canvas.width,Math.random()*canvas.height, false, randomBonux())
-          phase = 1;
+            if(perso.level%5 == 0)
+            {
+                BOSS_SPAWN();
+                perso.score = perso.score + 9
+            }
+            else
+            {
+                VAGUE(10, perso.level);
+                bonus = new BONUX(Math.random()*canvas.width,Math.random()*canvas.height, false, randomBonux())
+            }
+
+            perso.level++;
+            phase = 1;
+
         }
 
         break;
@@ -157,7 +165,7 @@ var loop = function(){
 
 var draw = function(ctx){
   ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
-  for(var i =0; i<PROJECTILES.length;i++)
+  for(let i=0; i<PROJECTILES.length;i++)
   {
     if(PROJECTILES.stopped){
       PROJECTILES.splice(i, 1);
@@ -169,18 +177,17 @@ var draw = function(ctx){
     }
   }
 
-  for(var i =0; i<MECHANTS.length;i++)
+  for(let i =0; i<MECHANTS.length;i++)
   {
     MECHANTS[i].draw(ctx);
   }
 
-  if(bonus.taken == false)
+  if(bonus.taken === false)
   {
     bonus.draw(ctx)
   }
 
   perso.draw(ctx);
-  drawProgressBar(perso.life, ctx, 2, 20);
   drawScoreBoard(perso.score, perso.level, ctx, canvas)
 }
 
@@ -188,10 +195,4 @@ var draw = function(ctx){
 loop();
 
 
-    }
-
-
-
-    </script>
-
-  </body></html>
+</body></html>

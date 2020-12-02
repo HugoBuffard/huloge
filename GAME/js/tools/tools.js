@@ -10,9 +10,30 @@ function r2d(radians)
 }
 
 var randomBonux = function(){
-    var rand = Math.floor(Math.random() * Object.keys(BONUS).length)
+    let rand = randomNumber(Object.keys(BONUS).length);
 
     return BONUS[Object.keys(BONUS)[rand]]
+}
+
+var randomEnemy = function () {
+
+    let rand = randomNumber(Object.keys(TYPES_MECHANTS).length)
+
+    let enemy = TYPES_MECHANTS[Object.keys(TYPES_MECHANTS)[rand]]
+
+    if(enemy == TYPES_MECHANTS.BOSS)
+    {
+        return randomEnemy();
+    }
+    else
+    {
+        return enemy;
+    }
+}
+
+let randomNumber = function(max)
+{
+    return Math.floor(Math.random() * max);
 }
 
 var calculFinalScore = function(){

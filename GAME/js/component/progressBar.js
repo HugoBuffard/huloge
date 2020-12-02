@@ -1,29 +1,25 @@
-var drawProgressBar = function (val, ctx, width, height) {
+var drawProgressBar = function (val, ctx, width, height,x ,y, vieMax) {
 
     // Draw the fill
-    if(val > 66)
+    if(val > vieMax/3 + vieMax/3)
     {
         ctx.fillStyle = 'green';
     }
-    else if (val < 66 && val > 33)
+    else if (val < vieMax/3 + vieMax/3 && val > vieMax/3)
     {
         ctx.fillStyle = 'orange';
     }
-    else if(val < 33)
+    else if(val < vieMax/3)
     {
         ctx.fillStyle = 'red';
     }
 
-    ctx.fillRect(0, 0, val * width, height);
+    ctx.fillRect(x, y, val * width, height);
 
     ctx.fillStyle = 'black';
 
-    if(val <= 0)
+    if(val > 0)
     {
-        ctx.fillText("Mort 😵", 0+80+(width/2), 0+(height/2));
-    }
-    else 
-    {
-        ctx.fillText("Vie: "+val + "%", 0+80+(width/2), 0+(height/2));
+        ctx.fillText("Vie: "+val + "%", 80+(width/2), (height / 2));
     }
   }

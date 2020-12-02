@@ -1,6 +1,6 @@
 var PROJECTILES = [];
 
-var PROJECTILE = function(x,y,a,v, dmax=400){
+var PROJECTILE = function(x,y,a,v, dmax=400, mechantOrPerso){
   this.x=x;
   this.y=y;
   this.a=a;
@@ -22,21 +22,36 @@ var PROJECTILE = function(x,y,a,v, dmax=400){
       this.x+=dx;
       this.y+=dy;
 
-      for(i=0; i< MECHANTS.length; i++)
+      if(mechantOrPerso == 0)
       {
-        if(MECHANTS[i].alive)
-        {
-          if(distance(this, MECHANTS[i])<20)
-          {
-            MECHANTS[i].vie--;
+        for(let i=0; i< MECHANTS.length; i++) {
+          if (MECHANTS[i].alive) {
+            if (distance(this, MECHANTS[i]) < 20) {
+              MECHANTS[i].vie--;
 
-            if(MECHANTS[i].vie <= 0)
-            {
-              MECHANTS[i].meurt()
-              MECHANTS.splice(i,1);
-              this.d=this.dmax;
-              this.stopped = true;
+              if (MECHANTS[i].vie <= 0) {
+                MECHANTS[i].meurt()
+                MECHANTS.splice(i, 1);
+                this.d = this.dmax;
+                this.stopped = true;
+              }
             }
+          }
+        }
+      }
+      else if(mechantOrPerso == 1)
+      {
+        this.face="⭕"
+        if(distance(this, perso < 20))
+        {
+          if (perso.invincible == false)
+          {
+            perso.face="🥵";
+            perso.life--;
+          }
+          else
+          {
+            perso.face=BONUS.INVINCIBLE.face;
           }
         }
       }
