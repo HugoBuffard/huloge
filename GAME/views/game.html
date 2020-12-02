@@ -96,6 +96,7 @@
 
       canvas.width = 800;
       canvas.height = 600;
+      canvas.style.backgroundImage="url('../assets/images/image.jpg')";
 
       ctx.font = '20px serif'
       ctx.textAlign = "center";
@@ -173,11 +174,14 @@
         } else if (perso.life > 0 && perso.level == levelMax) {
           draw(ctx);
           ctx.fillText("Gagné ! 🏆 Score : " + calculFinalScore(), canvas.width >> 1, canvas.height >> 1);
+          canvas.style.background="green";
           showReplayButton();
         } else {
           draw(ctx);
           ctx.fillText("Perdu ! 🤯 Score : " + calculFinalScore(), canvas.width >> 1, canvas.height >> 1);
+          canvas.style.background="red";
           showReplayButton();
+
         }
       }
 
