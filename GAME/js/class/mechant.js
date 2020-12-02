@@ -1,8 +1,12 @@
 const TYPES_MECHANTS= {
-  BOSS : {nom: "BOSS", vie: 150, face: "👹"},
-  SIMPLE: {nom: "SIMPLE", vie: 35, face: "🤡"},
-  AI: {nom: "AI", vie: 1, face: "😈"}
+  BOSS : {nom: "BOSS", vie: 150, face: "👹", description: "Ce méchant est de type BOSS, il à 150 de vie et se déplace verticalement il peut jeter des projectiles"},
+  SIMPLE: {nom: "SIMPLE", vie: 35, face: "🤡", description: "Ces méchants sont de type SIMPLE, ils ont 35 de vie et se déplacent horizontalement"},
+  AI: {nom: "AI", vie: 1, face: "😈", description: "Ce méchant est de type Intelligence Articielle, il à 1 de vie est il suit vos mouvement"}
 }
+
+
+
+
 
 var MECHANTS = [];
 

@@ -4,7 +4,7 @@ var showBonusList = function(){
 
     //set du ul
     var ul = document.createElement("ul")
-    ul.setAttribute('class',  "list-group list-group-flush")
+   // ul.setAttribute('class',  "list-group list-group-flush")
 
     //set des li
 
@@ -13,7 +13,7 @@ var showBonusList = function(){
         var b = BONUS[Object.keys(BONUS)[j]]
 
         var li = document.createElement("li")
-        li.setAttribute('class', "list-group-item")
+       // li.setAttribute('class', "list-group-item")
         li.innerHTML = b.face + " " + b.name + " : " + b.description
 
         ul.appendChild(li)
