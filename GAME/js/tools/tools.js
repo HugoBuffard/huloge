@@ -37,5 +37,5 @@ let randomNumber = function(max)
 }
 
 var calculFinalScore = function(){
-    return (perso.score + perso.life) * perso.level
+    return perso.score * perso.level
 }

@@ -63,24 +63,39 @@ var MECHANT = function(x, y, type){
       this.face = TYPES_MECHANTS.BOSS.face
       this.vie = this.vieMax = TYPES_MECHANTS.BOSS.vie
 
+
+        this.tirer = function(){
+          PROJECTILES.push(new PROJECTILE(this.x, this.y, randomNumber(360), 3, 1000, 1))
+        }
+
       let dx = this.v
       let dy = 0
+      let timer = 0;
+      let bool = true;
 
-      this.ia = function(){
+      this.ia = function() {
         this.x = this.x + dx
         this.y = this.y + dy
 
-        if(this.x+ dx > canvas.width || this.x + dx < 0)
-        {
-           dx = -dx
+        if (this.x + dx > canvas.width || this.x + dx < 0) {
+          dx = -dx
         }
 
-        if (this.alive == true && this.vie > 0)
-        {
+        if (this.alive == true && this.vie > 0) {
 
-          PROJECTILES.push( new PROJECTILE(this.x, this.y, randomNumber(360), 3, 1000, 1))
+          timer++
+
+          if(timer%modulo == 0)
+          {
+            bool = true
+          }
+
+          if(bool)
+          {
+            this.tirer()
+            bool = false
+          }
         }
-
       }
 
     break;

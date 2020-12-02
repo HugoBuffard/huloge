@@ -26,7 +26,9 @@
   <!-- Banner -->
   <section id="banner" style="padding:2em 0 5em 0;">
     <div class="inner">
-      <center><canvas id="game" style="border: 2px solid #888; background:url(../assets/images/image2.jpg); width:800px; height:600px; margin-bottom:1%;"></canvas></center>
+      <center>
+        <div style=""><h1 id="score"></h1></div>
+        <canvas id="game" style="border: 2px solid #888; background:url(../assets/images/image2.jpg); width:800px; height:600px; margin-bottom:1%;"></canvas></center>
       <ul id="liste" class="actions" style="margin:0 0 0 0;">
         <center>
           <a class="button alt" style="margin-right:5%;" onclick="maNouvelleGame()">commencer</a>
@@ -48,6 +50,12 @@
     <!-- Footer -->
     <section id="footer">
       <div class="inner">
+        <h5>Developpeurs</h5>
+        <ul>
+          <li>BUFFARD Hugo </li>
+          <li>OUTHIER Loïc</li>
+          <li>MAZOYER Geoffrey</li>
+        </ul>
       </div>
     </section>
 
@@ -76,6 +84,7 @@
       var radio1 = document.getElementById("radio1");
       var radio2 = document.getElementById("radio2");
       var ctx = canvas.getContext('2d');
+      var modulo;
 
       var perso = new PERSO(canvas.width >> 1, canvas.height >> 1, 90, 0);
 
@@ -104,11 +113,13 @@
       if(difficultly) {
         VAGUE(5, 1)
         levelMax = 7;
+        modulo = 15;
       }
       else
       {
         VAGUE(10, 1)
         levelMax = 12;
+        modulo = 10;
       }
       var phase = 0;
 
@@ -202,6 +213,7 @@
 
         perso.draw(ctx);
         drawScoreBoard(perso.score, perso.level, ctx, canvas)
+        appendScoreBoardOnPage()
       }
 
 

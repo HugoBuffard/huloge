@@ -39,10 +39,10 @@ var PROJECTILE = function(x,y,a,v, dmax=400, mechantOrPerso){
           }
         }
       }
-      else if(mechantOrPerso == 1)
+      else
       {
         this.face="⭕"
-        if(distance(this, perso < 20))
+        if(distance(this, perso) < 20)
         {
           if (perso.invincible == false)
           {
